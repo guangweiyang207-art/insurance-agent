@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+
+# 本地模型权重(体积大, 从 hf-mirror 下载)
+models/
+
+# 本地数据
+data/
+
+# 环境配置(含密钥)
+.env

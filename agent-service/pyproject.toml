@@ -1,0 +1,81 @@
+[project]
+name = "agent-service"
+version = "0.1.0"
+description = "Insurance AI agent service"
+requires-python = ">=3.11"
+dependencies = [
+    "asyncpg>=0.29.0",
+    "fastapi>=0.115.0",
+    "sse-starlette>=3.4.4",
+    "httpx>=0.27.0",
+    "pymilvus[model]>=2.6,<2.7",
+    "uvicorn[standard]>=0.30.0",
+    "pydantic>=2.8.0",
+    "pydantic-settings>=2.4.0",
+    "structlog>=24.1.0",
+    "langchain>=1.3,<2",
+    "langchain-text-splitters>=1.1.2",
+    "langchain-openai>=1.3.0",
+    "langchain-deepseek>=1.1.0",
+    "langgraph>=1.2.4",
+    "langgraph-checkpoint-postgres>=3.1.0",
+    "mineru-open-sdk>=0.2.5",
+    "flagembedding>=1.4.0",
+    "transformers>=4.44,<5",
+    "pyjwt>=2.13.0",
+    "sqlalchemy[asyncio]>=2.0.0",
+    "openai>=1.0.0",
+    "psycopg[binary]>=3.3.4",
+    "notebook>=7.6.0",
+    "redis>=5.0.0",
+]
+
+# torch设置为可选依赖，根据需求安装CPU版本或者GPU版本
+# 安装命令： uv sync --extra torch-cpu
+[tool.uv]
+conflicts = [
+    [
+        { extra = "torch-cpu" },
+        { extra = "torch-gpu" },
+    ],
+]
+[project.optional-dependencies]
+torch-cpu = [
+    "torch>=2.4,<2.12.1",
+]
+
+torch-gpu = [
+    "torch>=2.4,<2.12.1",
+]
+
+# 新增：测试依赖
+test = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.24.0",
+    "aiosqlite>=0.20.0",
+    "fakeredis>=2.0.0",
+]
+
+[tool.uv.sources]
+torch = [
+    { index = "pytorch-cpu", extra = "torch-cpu" },
+    { index = "pytorch-cu130", extra = "torch-gpu" },
+]
+
+[[tool.uv.index]]
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+default = true
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://mirrors.nju.edu.cn/pytorch/whl/cpu"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://mirrors.nju.edu.cn/pytorch/whl/cu130"
+explicit = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+addopts = "-s"
